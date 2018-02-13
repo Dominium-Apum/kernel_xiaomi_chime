@@ -68,8 +68,8 @@ jiffies = jiffies_64;
 #ifdef CONFIG_UNMAP_KERNEL_AT_EL0
 #define TRAMP_TEXT					\
 	. = ALIGN(PAGE_SIZE);				\
-	__entry_tramp_text_start = .;			\
-	*(.entry.tramp.text)				\
+	VMLINUX_SYMBOL(__entry_tramp_text_start) = .;	\
+	KEEP(*(.entry.tramp.text))			\
 	. = ALIGN(PAGE_SIZE);				\
 	__entry_tramp_text_end = .;
 #else
