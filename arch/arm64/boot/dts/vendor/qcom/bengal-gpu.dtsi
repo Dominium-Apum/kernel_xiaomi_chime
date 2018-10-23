@@ -132,6 +132,9 @@
 				"ahb_clk", "mem_clk", "gmu_clk",
 				"smmu_vote";
 
+		/* To disable GPU wake up on touch event */
+		qcom,disable-wake-on-touch;
+
 		/* Bus Scale Settings */
 		qcom,gpubw-dev = <&gpubw>;
 		qcom,bus-control;
