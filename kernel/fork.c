@@ -93,6 +93,7 @@
 #include <linux/kcov.h>
 #include <linux/livepatch.h>
 #include <linux/thread_info.h>
+#include <linux/simple_lmk.h>
 #include <linux/cpufreq_times.h>
 #include <linux/scs.h>
 
@@ -1045,6 +1046,7 @@ static inline void __mmput(struct mm_struct *mm)
 	if (mm->binfmt)
 		module_put(mm->binfmt->module);
 	lru_gen_del_mm(mm);
+	simple_lmk_mm_freed(mm);
 	mmdrop(mm);
 }
 
