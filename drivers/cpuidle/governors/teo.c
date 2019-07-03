@@ -134,7 +134,6 @@ struct teo_bin {
  * @sleep_length_ns: Time till the closest timer event (at the selection time).
  * @state_bins: Idle state data bins for this CPU.
  * @total: Grand total of the "intercepts" and "hits" mertics for all bins.
- * @last_state: Idle state entered by the CPU last time.
  * @next_recent_idx: Index of the next @recent_idx entry to update.
  * @recent_idx: Indices of bins corresponding to recent "intercepts".
  */
@@ -143,7 +142,6 @@ struct teo_cpu {
 	s64 sleep_length_ns;
 	struct teo_bin state_bins[CPUIDLE_STATE_MAX];
 	unsigned int total;
-	int last_state;
 	int next_recent_idx;
 	int recent_idx[NR_RECENT];
 };
@@ -170,7 +168,9 @@ static void teo_update(struct cpuidle_driver *drv, struct cpuidle_device *dev)
 		 */
 		measured_us = UINT_MAX;
 	} else {
-		unsigned int lat = drv->states[cpu_data->last_state].exit_latency;
+		unsigned int lat;
+
+		lat = drv->states[dev->last_state_idx].exit_latency;
 
 		/*
 		 * The computations below are to determine whether or not the
@@ -302,9 +302,9 @@ static int teo_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
 	bool alt_intercepts, alt_recent;
 	ktime_t delta_tick;
 
-	if (cpu_data->last_state >= 0) {
+	if (dev->last_state_idx >= 0) {
 		teo_update(drv, dev);
-		cpu_data->last_state = -1;
+		dev->last_state_idx = -1;
 	}
 
 	cpu_data->time_span_ns = local_clock();
@@ -488,7 +488,7 @@ static void teo_reflect(struct cpuidle_device *dev, int state)
 {
 	struct teo_cpu *cpu_data = per_cpu_ptr(&teo_cpus, dev->cpu);
 
-	cpu_data->last_state = state;
+	dev->last_state_idx = state;
 	/*
 	 * If the wakeup was not "natural", but triggered by one of the safety
 	 * nets, assume that the CPU might have been idle for the entire sleep
