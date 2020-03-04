@@ -786,7 +786,7 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
 
 	/* Don't allow userspace to write to /dev/kmesg */
 	return len;
-	
+
 	if (!user || len > LOG_LINE_MAX)
 		return -EINVAL;
 
