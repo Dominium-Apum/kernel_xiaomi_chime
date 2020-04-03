@@ -70,10 +70,10 @@
 #define TEXT_MAIN .text .text.[0-9a-zA-Z_]*
 #define TEXT_CFI_MAIN .text.[0-9a-zA-Z_]*.cfi
 #define DATA_MAIN .data .data.[0-9a-zA-Z_]* .data..L* .data..compoundliteral*
-#define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]*
-#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L*
+#define SDATA_MAIN .sdata .sdata.[0-9a-zA-Z_]* .sdata..compoundliteral*
+#define RODATA_MAIN .rodata .rodata.[0-9a-zA-Z_]* .rodata..L* .rodata..compoundliteral*
 #define BSS_MAIN .bss .bss.[0-9a-zA-Z_]* .bss..compoundliteral*
-#define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]*
+#define SBSS_MAIN .sbss .sbss.[0-9a-zA-Z_]* .sbss..compoundliteral*
 #else
 #define TEXT_MAIN .text
 #define TEXT_CFI_MAIN .text.cfi
