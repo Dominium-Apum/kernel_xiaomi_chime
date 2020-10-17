@@ -68,6 +68,7 @@
 #include <linux/tsacct_kern.h>
 
 #include <asm/tlb.h>
+#include <linux/battery_saver.h>
 
 #ifdef CONFIG_PARAVIRT
 # include <asm/paravirt.h>
@@ -2996,7 +2997,7 @@ static inline enum sched_boost_policy sched_boost_policy(void)
 extern unsigned int sched_boost_type;
 static inline int sched_boost(void)
 {
-	return sched_boost_type;
+	return unlikely(is_battery_saver_on()) ? 0 : sched_boost_type;
 }
 
 static inline bool rt_boost_on_big(void)
