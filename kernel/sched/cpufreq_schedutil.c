@@ -14,7 +14,6 @@
 #include "sched.h"
 
 #include <linux/sched/cpufreq.h>
-#include <trace/events/power.h>
 #include <linux/sched/sysctl.h>
 
 struct sugov_tunables {
@@ -686,11 +685,6 @@ static void sugov_update_single(struct update_util_data *hook, u64 time,
 	sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load.ws,
 			   sg_policy->policy->cur);
 
-	trace_sugov_util_update(sg_cpu->cpu, sg_cpu->util,
-				sg_policy->avg_cap, max, sg_cpu->walt_load.nl,
-				sg_cpu->walt_load.pl,
-				sg_cpu->walt_load.rtgb_active, flags);
-
 	sugov_walt_adjust(sg_cpu, &util, &max);
 	next_f = get_next_freq(sg_policy, util, max);
 	/*
@@ -797,11 +791,6 @@ sugov_update_shared(struct update_util_data *hook, u64 time, unsigned int flags)
 	sugov_calc_avg_cap(sg_policy, sg_cpu->walt_load.ws,
 			   sg_policy->policy->cur);
 	ignore_dl_rate_limit(sg_cpu, sg_policy);
-
-	trace_sugov_util_update(sg_cpu->cpu, sg_cpu->util, sg_policy->avg_cap,
-				sg_cpu->max, sg_cpu->walt_load.nl,
-				sg_cpu->walt_load.pl,
-				sg_cpu->walt_load.rtgb_active, flags);
 
 	if (sugov_should_update_freq(sg_policy, time) &&
 	    !(flags & SCHED_CPUFREQ_CONTINUE)) {
