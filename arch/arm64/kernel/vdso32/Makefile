@@ -123,6 +123,9 @@ dmbinstr := $(call cc32-as-instr,dmb ishld,-DCONFIG_AS_DMB_ISHLD=1)
 VDSO_CFLAGS += $(dmbinstr)
 VDSO_AFLAGS += $(dmbinstr)
 
+VDSO_CFLAGS += -march=armv8-a -mtune=cortex-a72.cortex-a53
+VDSO_AFLAGS += -march=armv8-a -mtune=cortex-a72.cortex-a53
+
 # From arm vDSO Makefile
 VDSO_LDFLAGS += -Bsymbolic --no-undefined -soname=linux-vdso.so.1
 VDSO_LDFLAGS += -z max-page-size=4096 -z common-page-size=4096

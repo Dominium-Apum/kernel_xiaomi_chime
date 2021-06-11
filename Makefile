@@ -445,6 +445,17 @@ KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs -pipe \
 		   -Wno-format-security \
 		   -std=gnu89
 KBUILD_CPPFLAGS := -D__KERNEL__
+
+# Tell compiler to tune the performance of the code for a specified
+# target processor
+ifeq ($(cc-name),gcc)
+KBUILD_CFLAGS += -mcpu=cortex-a72.cortex-a53 -march=armv8-a+crc+crypto
+KBUILD_AFLAGS += -mcpu=cortex-a72.cortex-a53 -march=armv8-a+crc+crypto
+else ifeq ($(cc-name),clang)
+KBUILD_CFLAGS += -mcpu=cortex-a53 -march=armv8-a+crc+crypto
+KBUILD_AFLAGS += -mcpu=cortex-a53 -march=armv8-a+crc+crypto
+endif
+
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
 KBUILD_AFLAGS_MODULE  := -DMODULE
