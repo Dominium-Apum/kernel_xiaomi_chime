@@ -1509,23 +1509,16 @@ static int find_lowest_rq(struct task_struct *task);
 
 /*
  * Return whether the task on the given cpu is currently non-preemptible
- * while handling a potentially long softint, or if the task is likely
- * to block preemptions soon because (a) it is a ksoftirq thread that is
- * handling slow softints, (b) it is idle and therefore likely to start
- * processing the irq's immediately, (c) the cpu is currently handling
- * hard irq's and will soon move on to the softirq handler.
+ * while handling a softirq or is likely to block preemptions soon because
+ * it is a ksoftirq thread.
  */
 bool
 task_may_not_preempt(struct task_struct *task, int cpu)
 {
-	__u32 softirqs = per_cpu(active_softirqs, cpu) |
-			 __IRQ_STAT(cpu, __softirq_pending);
 	struct task_struct *cpu_ksoftirqd = per_cpu(ksoftirqd, cpu);
 
-	return ((softirqs & LONG_SOFTIRQ_MASK) &&
-		(task == cpu_ksoftirqd || is_idle_task(task) ||
-		 (task_thread_info(task)->preempt_count
-			& (HARDIRQ_MASK | SOFTIRQ_MASK))));
+	return (task_thread_info(task)->preempt_count & SOFTIRQ_MASK) ||
+	       task == cpu_ksoftirqd;
 }
 
 static int
