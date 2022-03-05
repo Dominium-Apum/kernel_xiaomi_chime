@@ -1203,7 +1203,6 @@ static int fuse_readlink_page(struct inode *inode, struct page *page)
 {
 	struct fuse_conn *fc = get_fuse_conn(inode);
 	struct fuse_req *req;
-	int err;
 
 	req = fuse_get_req(fc, 1);
 	if (IS_ERR(req))
