@@ -85,5 +85,9 @@ struct posix_acl *erofs_get_acl(struct inode *inode, int type);
 #define erofs_get_acl	(NULL)
 #endif
 
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wincompatible-pointer-types"
+#endif
+
 #endif
 
