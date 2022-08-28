@@ -145,3 +145,8 @@ kernel/configs/android-*.cfg
 # Build script & out
 build.sh
 out/
+
+# Compiler
+clang/
+gcc/
+gcc32/
