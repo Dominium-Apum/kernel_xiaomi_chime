@@ -911,7 +911,7 @@ struct adreno_gpudev {
 
 	struct adreno_irq *irq;
 	int num_prio_levels;
-        int cp_rb_cntl;
+	int cp_rb_cntl;
 	unsigned int vbif_xin_halt_ctrl0_mask;
 	unsigned int gbif_client_halt_mask;
 	unsigned int gbif_arb_halt_mask;
