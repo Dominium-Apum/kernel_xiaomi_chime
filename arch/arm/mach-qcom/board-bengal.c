@@ -12,6 +12,7 @@
 static const char *trinket_dt_match[] __initconst = {
 	"qcom,bengal",
 	"qcom,bengal-iot",
+	"qcom,bengalp-iot",
 	NULL
 };
 
