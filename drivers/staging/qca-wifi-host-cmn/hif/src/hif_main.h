@@ -201,6 +201,10 @@ struct hif_softc {
 	atomic_t link_suspended;
 	uint32_t *vaddr_rri_on_ddr;
 	qdf_dma_addr_t paddr_rri_on_ddr;
+#ifdef CONFIG_BYPASS_QMI
+	uint32_t *vaddr_qmi_bypass;
+	qdf_dma_addr_t paddr_qmi_bypass;
+#endif
 	int linkstate_vote;
 	bool fastpath_mode_on;
 	atomic_t tasklet_from_intr;
@@ -247,6 +251,13 @@ struct hif_softc {
 #endif
 #ifdef HIF_CE_LOG_INFO
 	qdf_notif_block hif_recovery_notifier;
+#endif
+#ifdef FEATURE_RUNTIME_PM
+	/* Variable to track the link state change in RTPM */
+	qdf_atomic_t pm_link_state;
+#endif
+#ifdef SYSTEM_PM_CHECK
+	qdf_atomic_t sys_pm_state;
 #endif
 };
 
@@ -449,4 +460,5 @@ void hif_uninit_rri_on_ddr(struct hif_softc *scn);
 static inline
 void hif_uninit_rri_on_ddr(struct hif_softc *scn) {}
 #endif
+void hif_cleanup_static_buf_to_target(struct hif_softc *scn);
 #endif /* __HIF_MAIN_H__ */

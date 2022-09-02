@@ -35,6 +35,7 @@
 #include "wlan_crypto_def_i.h"
 #include "wlan_crypto_param_handling_i.h"
 #include "wlan_crypto_obj_mgr_i.h"
+#include "wlan_crypto_main.h"
 #include <qdf_module.h>
 
 const struct wlan_crypto_cipher *wlan_crypto_cipher_ops[WLAN_CRYPTO_CIPHER_MAX];
@@ -4063,6 +4064,27 @@ wlan_crypto_reset_prarams(struct wlan_crypto_params *params)
 	params->rsn_caps = 0;
 }
 
+uint8_t *
+wlan_crypto_parse_rsnxe_ie(uint8_t *rsnxe_ie, uint8_t *cap_len)
+{
+	uint8_t len;
+	uint8_t *ie;
+
+	if (!rsnxe_ie)
+		return NULL;
+
+	ie = rsnxe_ie;
+	len = ie[1];
+	ie += 2;
+
+	if (!len)
+		return NULL;
+
+	*cap_len = ie[0] & 0xf;
+
+	return ie;
+}
+
 QDF_STATUS wlan_set_vdev_crypto_prarams_from_ie(struct wlan_objmgr_vdev *vdev,
 						uint8_t *ie_ptr,
 						uint16_t ie_len)
@@ -4321,4 +4343,35 @@ void wlan_crypto_set_sae_single_pmk_bss_cap(struct wlan_objmgr_vdev *vdev,
 }
 #endif
 
+void wlan_crypto_reset_vdev_params(struct wlan_objmgr_vdev *vdev)
+{
+	struct wlan_crypto_comp_priv *crypto_priv;
+
+	crypto_debug("reset params for vdev %d", wlan_vdev_get_id(vdev));
+	crypto_priv = (struct wlan_crypto_comp_priv *)
+		       wlan_get_vdev_crypto_obj(vdev);
+
+	if (!crypto_priv) {
+		crypto_err("crypto_priv NULL");
+		return;
+	}
+
+	wlan_crypto_reset_prarams(&crypto_priv->crypto_params);
+}
+
+QDF_STATUS wlan_crypto_psoc_enable(struct wlan_objmgr_psoc *psoc)
+{
+	if (psoc && WLAN_CRYPTO_TX_OPS_REGISTER_EVENTS(psoc))
+		return WLAN_CRYPTO_TX_OPS_REGISTER_EVENTS(psoc)(psoc);
+
+	return QDF_STATUS_E_FAILURE;
+}
+
+QDF_STATUS wlan_crypto_psoc_disable(struct wlan_objmgr_psoc *psoc)
+{
+	if (psoc && WLAN_CRYPTO_TX_OPS_DEREGISTER_EVENTS(psoc))
+		return WLAN_CRYPTO_TX_OPS_DEREGISTER_EVENTS(psoc)(psoc);
+
+	return QDF_STATUS_E_FAILURE;
+}
 #endif

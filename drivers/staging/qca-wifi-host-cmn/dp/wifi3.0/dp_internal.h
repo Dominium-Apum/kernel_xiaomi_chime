@@ -2128,6 +2128,28 @@ static inline uint32_t dp_history_get_next_index(qdf_atomic_t *curr_idx,
 
 #ifdef DP_MEM_PRE_ALLOC
 /**
+ * dp_context_alloc_mem() - allocate memory for DP context
+ * @soc: datapath soc handle
+ * @ctxt_type: DP context type
+ * @ctxt_size: DP context size
+ *
+ * Return: DP context address
+ */
+void *dp_context_alloc_mem(struct dp_soc *soc, enum dp_ctxt_type ctxt_type,
+			   size_t ctxt_size);
+
+/**
+ * dp_context_free_mem() - Free memory of DP context
+ * @soc: datapath soc handle
+ * @ctxt_type: DP context type
+ * @vaddr: Address of context memory
+ *
+ * Return: None
+ */
+void dp_context_free_mem(struct dp_soc *soc, enum dp_ctxt_type ctxt_type,
+			 void *vaddr);
+
+/**
  * dp_desc_multi_pages_mem_alloc() - alloc memory over multiple pages
  * @soc: datapath soc handle
  * @desc_type: memory request source type
@@ -2174,6 +2196,20 @@ void dp_desc_multi_pages_mem_free(struct dp_soc *soc,
 
 #else
 static inline
+void *dp_context_alloc_mem(struct dp_soc *soc, enum dp_ctxt_type ctxt_type,
+			   size_t ctxt_size)
+{
+	return qdf_mem_malloc(ctxt_size);
+}
+
+static inline
+void dp_context_free_mem(struct dp_soc *soc, enum dp_ctxt_type ctxt_type,
+			 void *vaddr)
+{
+	qdf_mem_free(vaddr);
+}
+
+static inline
 void dp_desc_multi_pages_mem_alloc(struct dp_soc *soc,
 				   enum dp_desc_type desc_type,
 				   struct qdf_mem_multi_page_t *pages,
@@ -2198,6 +2234,84 @@ void dp_desc_multi_pages_mem_free(struct dp_soc *soc,
 }
 
 #endif
+#ifdef FEATURE_RUNTIME_PM
+/**
+ * dp_runtime_get() - Get dp runtime refcount
+ * @soc: Datapath soc handle
+ *
+ * Get dp runtime refcount by increment of an atomic variable, which can block
+ * dp runtime resume to wait to flush pending tx by runtime suspend.
+ *
+ * Return: Current refcount
+ */
+static inline int32_t dp_runtime_get(struct dp_soc *soc)
+{
+	return qdf_atomic_inc_return(&soc->dp_runtime_refcount);
+}
 
+/**
+ * dp_runtime_put() - Return dp runtime refcount
+ * @soc: Datapath soc handle
+ *
+ * Return dp runtime refcount by decrement of an atomic variable, allow dp
+ * runtime resume finish.
+ *
+ * Return: Current refcount
+ */
+static inline int32_t dp_runtime_put(struct dp_soc *soc)
+{
+	return qdf_atomic_dec_return(&soc->dp_runtime_refcount);
+}
 
+/**
+ * dp_runtime_get_refcount() - Get dp runtime refcount
+ * @soc: Datapath soc handle
+ *
+ * Get dp runtime refcount by returning an atomic variable
+ *
+ * Return: Current refcount
+ */
+static inline int32_t dp_runtime_get_refcount(struct dp_soc *soc)
+{
+	return qdf_atomic_read(&soc->dp_runtime_refcount);
+}
+
+/**
+ * dp_runtime_init() - Init dp runtime refcount when dp soc init
+ * @soc: Datapath soc handle
+ *
+ * Return: QDF_STATUS
+ */
+static inline QDF_STATUS dp_runtime_init(struct dp_soc *soc)
+{
+	return qdf_atomic_init(&soc->dp_runtime_refcount);
+}
+#else
+static inline int32_t dp_runtime_get(struct dp_soc *soc)
+{
+	return 0;
+}
+
+static inline int32_t dp_runtime_put(struct dp_soc *soc)
+{
+	return 0;
+}
+
+static inline QDF_STATUS dp_runtime_init(struct dp_soc *soc)
+{
+	return QDF_STATUS_SUCCESS;
+}
+#endif
+
+/**
+ * dp_peer_flush_frags() - Flush all fragments for a particular
+ *  peer
+ * @soc_hdl - data path soc handle
+ * @vdev_id - vdev id
+ * @peer_addr - peer mac address
+ *
+ * Return: None
+ */
+void dp_peer_flush_frags(struct cdp_soc_t *soc_hdl, uint8_t vdev_id,
+			 uint8_t *peer_mac);
 #endif /* #ifndef _DP_INTERNAL_H_ */
