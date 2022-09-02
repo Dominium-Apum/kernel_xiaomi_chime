@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2020, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2021, The Linux Foundation. All rights reserved.
  * Copyright (C) 2013 Red Hat
  * Author: Rob Clark <robdclark@gmail.com>
  *
@@ -138,6 +138,7 @@ enum msm_mdp_crtc_property {
 	CRTC_PROP_DEST_SCALER_LUT_ED,
 	CRTC_PROP_DEST_SCALER_LUT_CIR,
 	CRTC_PROP_DEST_SCALER_LUT_SEP,
+	CRTC_PROP_DSPP_INFO,
 
 	/* # of blob properties */
 	CRTC_PROP_BLOBCOUNT,
@@ -512,6 +513,7 @@ struct msm_resource_caps_info {
  *				 used instead of panel TE in cmd mode panels
  * @roi_caps:           Region of interest capability info
  * @qsync_min_fps	Minimum fps supported by Qsync feature
+ * @has_qsync_min_fps_list True if dsi-supported-qsync-min-fps-list exits
  * @te_source		vsync source pin information
  */
 struct msm_display_info {
@@ -535,6 +537,8 @@ struct msm_display_info {
 	struct msm_roi_caps roi_caps;
 
 	uint32_t qsync_min_fps;
+	bool has_qsync_min_fps_list;
+
 	uint32_t te_source;
 };
 
