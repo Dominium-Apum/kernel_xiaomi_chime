@@ -603,7 +603,6 @@ again:
 		 * values.
 		 */
 		pmd = pmd_read_atomic(pmdp);
-		barrier();
 		if (!pmd_devmap(pmd) && !pmd_trans_huge(pmd))
 			goto again;
 

@@ -3487,9 +3487,6 @@ restart:
 	for (addr = start; addr != end; i++, addr = next) {
 		pmd_t val = pmd_read_atomic(pmd + i);
 
-		/* for pmd_read_atomic() */
-		barrier();
-
 		next = pmd_addr_end(addr, end);
 
 		if (!pmd_present(val)) {
