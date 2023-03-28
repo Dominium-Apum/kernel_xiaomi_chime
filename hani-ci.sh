@@ -50,7 +50,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	if [ -f "$kernel" ]; then
 		rm *.zip 2>/dev/null
 		# Set kernel name and version
-		hash=$(git log -n 1 --pretty=format:'%H')
+		hash=$(git log -n 1 --pretty=format:'%h')
 		hash=${hash:7}
 		lastcommit=$hash
 		REVISION=4.19-hanikrnl.$lastcommit
