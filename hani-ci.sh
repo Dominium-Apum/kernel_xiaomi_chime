@@ -19,13 +19,6 @@ if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	touch $HOME/tc/clang-12.0.0/AndroidVersion.txt && echo -e "14.0.0" | sudo tee -a $HOME/tc/clang-14.0.0/AndroidVersion.txt > /dev/null 2>&1
 fi
 
-# Regenerate defconfig file
-if [[ $1 = "-r" || $1 = "--regen" ]]; then
-	make O=out ARCH=arm64 $DEFCONFIG savedefconfig
-	cp out/defconfig arch/arm64/configs/$DEFCONFIG
-	echo -e "\nSuccessfully regenerated defconfig at $DEFCONFIG"
-fi
-
 # Make a clean build
 if [[ $1 = "-c" || $1 = "--clean" ]]; then
 	rm -rf out
@@ -43,11 +36,11 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	echo -e "*****************************"
 	echo -e ""
 	echo -e ""
-	make -j$(( 2 * $(nproc --all))) O=out ARCH=arm64 CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=$GCC_64_DIR/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$GCC_32_DIR/bin/arm-linux-androideabi- CLANG_TRIPLE=aarch64-linux-gnu- Image.gz dtbo.img
+	make -j$(( 2 * $(nproc --all))) O=out ARCH=arm64 CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=$GCC_64_DIR/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$GCC_32_DIR/bin/arm-linux-androideabi- CLANG_TRIPLE=aarch64-linux-gnu-
 
 	kernel="out/arch/arm64/boot/Image"
 
-	if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
+	if [ -f "$kernel" ]; then
 		rm *.zip 2>/dev/null
 		# Set kernel name and version
 		hash=$(git log -n 1 --pretty=format:'%H')
