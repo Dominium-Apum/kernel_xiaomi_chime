@@ -74,19 +74,9 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 		cd ..
 
-	# Upload to SourceForge, only works if you use -b -s
-        if [[ $2 = "-s" || $2 = "--share" ]]; then
-                CHAT_ID="Put here" # ChatID
-                API="Put here" # API bot token
-                IMAGE="Put URL image"
-
-                curl \
-                -F chat_id="$CHAT_ID" \
-                -F "parse_mode=Markdown" \
-                -F caption="Put your changelog here and link in mardkdown style" \
-                -F photo="$IMAGE" \
-                https://api.telegram.org/bot"$API"/sendPhoto
-        fi
+	# Upload to Hosting
+	curl -T "$ZIPNAME" temp.sh
+	curl -T "$ZIPNAME" oshi.at
 
         echo -e ""
         echo -e ""
