@@ -19,6 +19,13 @@ if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	touch $HOME/tc/clang-12.0.0/AndroidVersion.txt && echo -e "14.0.0" | sudo tee -a $HOME/tc/clang-14.0.0/AndroidVersion.txt > /dev/null 2>&1
 fi
 
+# Regenerate defconfig file
+if [[ $1 = "-r" || $1 = "--regen" ]]; then
+	make O=out ARCH=arm64 $DEFCONFIG savedefconfig
+	cp out/defconfig arch/arm64/configs/$DEFCONFIG
+	echo -e "\nSuccessfully regenerated defconfig at $DEFCONFIG"
+fi
+
 # Make a clean build
 if [[ $1 = "-c" || $1 = "--clean" ]]; then
 	rm -rf out
