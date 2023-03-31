@@ -72,7 +72,6 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 
 	# Upload to Hosting
 	curl -T "$ZIPNAME" temp.sh
-	curl -T "$ZIPNAME" oshi.at
 
         echo -e ""
         echo -e ""
