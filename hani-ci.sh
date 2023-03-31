@@ -6,6 +6,8 @@ SECONDS=0 # builtin bash timer
 KERNEL_PATH=$PWD
 AK3_DIR="$HOME/tc/AnyKernel3"
 DEFCONFIG="vendor/chime_defconfig"
+export KBUILD_BUILD_USER=hani
+export KBUILD_BUILD_HOST=dungeon
 
 # Install needed tools
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
