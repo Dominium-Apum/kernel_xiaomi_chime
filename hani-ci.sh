@@ -4,19 +4,12 @@
 # Copyright (C)2022 Ardany Jolón
 SECONDS=0 # builtin bash timer
 KERNEL_PATH=$PWD
-TC_DIR="$HOME/tc/clang-14.0.0"
-GCC_64_DIR="$HOME/tc/aarch64-linux-android-4.9"
-GCC_32_DIR="$HOME/tc/arm-linux-androideabi-4.9"
 AK3_DIR="$HOME/tc/AnyKernel3"
 DEFCONFIG="vendor/chime_defconfig"
-export PATH="$TC_DIR/bin:$PATH"
 
 # Install needed tools
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
-	git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9 $HOME/tc/aarch64-linux-android-4.9
-	git clone https://github.com/LineageOS/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9 $HOME/tc/arm-linux-androideabi-4.9
-        wget https://gitlab.com/David112x/clang/-/archive/14.0.0/clang-14.0.0.tar.gz -O $HOME/tc/clang-14.0.0.tar.gz && tar xvf $HOME/tc/clang-14.0.0.tar.gz -C $HOME/tc/
-	touch $HOME/tc/clang-12.0.0/AndroidVersion.txt && echo -e "14.0.0" | sudo tee -a $HOME/tc/clang-14.0.0/AndroidVersion.txt > /dev/null 2>&1
+        bash <(curl https://raw.githubusercontent.com/itsHanibee/kernel_xiaomi_chime/hani/setup-antman.sh)
 fi
 
 # Regenerate defconfig file
@@ -32,8 +25,10 @@ if [[ $1 = "-c" || $1 = "--clean" ]]; then
 fi
 
 if [[ $1 = "-b" || $1 = "--build" ]]; then
+	export ARCH=arm64
+	PATH=$PWD/toolchain/bin:$PATH
 	mkdir -p out
-	make O=out ARCH=arm64 $DEFCONFIG
+	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 $DEFCONFIG
 	echo -e ""
 	echo -e ""
 	echo -e "*****************************"
@@ -43,7 +38,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	echo -e "*****************************"
 	echo -e ""
 	echo -e ""
-	make -j$(( 2 * $(nproc --all))) O=out ARCH=arm64 CC=clang LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CROSS_COMPILE=$GCC_64_DIR/bin/aarch64-linux-android- CROSS_COMPILE_ARM32=$GCC_32_DIR/bin/arm-linux-androideabi- CLANG_TRIPLE=aarch64-linux-gnu- || exit 69
+	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 -j$(nproc) || exit 69
 
 	kernel="out/arch/arm64/boot/Image"
 
