@@ -43,6 +43,8 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 -j$(nproc) || exit 69
 
 	kernel="out/arch/arm64/boot/Image"
+	dtbo="out/arch/arm64/boot/dtbo.img"
+	dtb="out/arch/arm64/boot/dtb.img"
 
 	if [ -f "$kernel" ]; then
 		rm *.zip 2>/dev/null
@@ -64,6 +66,9 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 			echo -e "\nAnyKernel3 repo not found locally and couldn't clone from GitHub! Aborting..."
 	fi
 		cp $kernel AnyKernel3
+		cp $dtbo AnyKernel3
+		cp $dtb AnyKernel3
+
 		rm -rf out/arch/arm64/boot
 		cd AnyKernel3
 		git checkout master &> /dev/null
