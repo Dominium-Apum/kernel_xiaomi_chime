@@ -516,8 +516,58 @@ static int qcom_cpufreq_hw_read_lut(struct platform_device *pdev,
 
 		cur_freq = c->table[i].frequency;
 
-		dev_dbg(dev, "index=%d freq=%d, core_count %d\n",
-			i, c->table[i].frequency, core_count);
+		if (cur_freq == 300000){
+			volt = 530000;
+		}
+		if (cur_freq == 614400){
+			volt = 530000;
+		}
+		if (cur_freq == 864000){
+			volt = 680000;
+		}
+		if (cur_freq == 1017600){
+			volt = 612000;
+		}
+		if (cur_freq == 1305600){
+			volt = 687000;
+		}
+		if (cur_freq == 1420800){
+			volt = 712000;
+		}
+		if (cur_freq == 1612800){
+			if (volt == 832000){
+			volt = 750000;
+			}
+			else {
+			volt = 724000;
+			}
+		}
+		if (cur_freq == 1804800){
+			if (volt==892000){
+			volt = 803000;}
+			else {
+			volt = 764000;
+			}
+		}
+
+		if (cur_freq == 652800){
+			volt = 530000;
+		}
+		if (cur_freq == 902400){
+			volt = 591000;
+		}
+		if (cur_freq == 1056000){
+			volt = 620000;
+		}
+		if (cur_freq == 1401600){
+			volt = 681000;
+		}
+		if (cur_freq == 1536000){
+			volt = 706000;
+		}
+		if (cur_freq == 2016000){
+			volt = 821000;
+		}
 
 		if (!of_find_freq(of_table, of_len, c->table[i].frequency)) {
 			c->table[i].frequency = CPUFREQ_ENTRY_INVALID;
@@ -550,6 +600,8 @@ static int qcom_cpufreq_hw_read_lut(struct platform_device *pdev,
 			cpu_dev = get_cpu_device(cpu);
 			if (!cpu_dev)
 				continue;
+			dev_info(dev, "freq=%d volt=%u\n",
+				 c->table[i].frequency, volt);
 			dev_pm_opp_add(cpu_dev, c->table[i].frequency * 1000,
 							volt);
 		}
