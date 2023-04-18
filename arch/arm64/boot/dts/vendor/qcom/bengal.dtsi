@@ -2000,6 +2000,7 @@
 				qcom,intents = <0x20 12>;
 
 				msm_cdsp_rm: qcom,msm_cdsp_rm {
+					qcom,qos-cores = <0 1 2 3>;
 					compatible = "qcom,msm-cdsp-rm";
 					qcom,qos-latency-us = <67>;
 					qcom,qos-maxhold-ms = <20>;
