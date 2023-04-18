@@ -1056,11 +1056,11 @@ static int ovl_setup_trap(struct super_block *sb, struct dentry *dir,
 static int ovl_report_in_use(struct ovl_fs *ofs, const char *name)
 {
 	if (ofs->config.index) {
-		pr_err("overlayfs: %s is in-use as upperdir/workdir of another mount, mount with '-o index=off' to override exclusive upperdir protection.\n",
+		pr_debug_once("overlayfs: %s is in-use as upperdir/workdir of another mount, mount with '-o index=off' to override exclusive upperdir protection.\n",
 		       name);
 		return -EBUSY;
 	} else {
-		pr_warn("overlayfs: %s is in-use as upperdir/workdir of another mount, accessing files from both mounts will result in undefined behavior.\n",
+		pr_debug_once("overlayfs: %s is in-use as upperdir/workdir of another mount, accessing files from both mounts will result in undefined behavior.\n",
 			name);
 		return 0;
 	}
