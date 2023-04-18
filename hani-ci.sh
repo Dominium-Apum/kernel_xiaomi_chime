@@ -40,7 +40,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	echo -e "*****************************"
 	echo -e ""
 	echo -e ""
-	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 -j$(nproc) || exit 69
+	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 -j$(nproc) || exit 69
 
 	kernel="out/arch/arm64/boot/Image"
 	dtbo="out/arch/arm64/boot/dtbo.img"
