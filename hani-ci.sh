@@ -52,7 +52,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		hash=$(git log -n 1 --pretty=format:'%h')
 		lastcommit=$hash
 		REVISION=4.19-hanikrnl.$lastcommit
-		ZIPNAME=""$REVISION"-chime-$(date '+%Y%m%d-%H%M').zip"
+		ZIPNAME=""$REVISION"-beehive-chime-$(date '+%Y%m%d-%H%M').zip"
 		echo -e ""
 		echo -e ""
 		echo -e "********************************************"
