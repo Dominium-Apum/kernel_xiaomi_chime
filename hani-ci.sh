@@ -11,7 +11,29 @@ export KBUILD_BUILD_HOST=dungeon
 
 # Install needed tools
 if [[ $1 = "-t" || $1 = "--tools" ]]; then
-        bash <(curl https://raw.githubusercontent.com/itsHanibee/kernel_xiaomi_chime/hani/setup-antman.sh)
+        mkdir toolchain
+	cd toolchain
+
+	curl -LO "https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman" || exit 1
+
+	chmod -x antman
+
+	echo 'Setting up toolchain in $(PWD)/toolchain'
+	bash antman -S || exit 1
+
+	echo 'Build libarchive for bsdtar'
+	git clone https://github.com/libarchive/libarchive || true
+	cd libarchive
+	bash build/autogen.sh
+	./configure
+	make -j$(nproc)
+	cd ..
+
+	echo 'Patch for glibc'
+	wget https://gist.githubusercontent.com/itsHanibee/fac63ea2fc0eca7b8d7dcbb7eb678c3b/raw/beacf8f0f71f4e8231eaa36c3e03d2bee9ae3758/patch-for-old-glibc.sh
+	export PATH=$(pwd)/libarchive:$PATH
+	bash patch-for-old-glibc.sh
+
 fi
 
 # Regenerate defconfig file
@@ -19,11 +41,6 @@ if [[ $1 = "-r" || $1 = "--regen" ]]; then
 	make O=out ARCH=arm64 $DEFCONFIG savedefconfig
 	cp out/defconfig arch/arm64/configs/$DEFCONFIG
 	echo -e "\nSuccessfully regenerated defconfig at $DEFCONFIG"
-fi
-
-# Make a clean build
-if [[ $1 = "-c" || $1 = "--clean" ]]; then
-	rm -rf out
 fi
 
 if [[ $1 = "-b" || $1 = "--build" ]]; then
@@ -40,7 +57,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	echo -e "*****************************"
 	echo -e ""
 	echo -e ""
-	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 -j$(nproc) || exit 69
+	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 -j$(nproc) || exit 1
 
 	kernel="out/arch/arm64/boot/Image"
 	dtbo="out/arch/arm64/boot/dtbo.img"
@@ -74,9 +91,6 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		git checkout master &> /dev/null
 		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 		cd ..
-
-	# Upload to Hosting
-	curl -T "$ZIPNAME" temp.sh
 
         echo -e ""
         echo -e ""
