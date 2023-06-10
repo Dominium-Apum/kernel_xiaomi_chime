@@ -35,7 +35,7 @@ if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	bash patch-for-old-glibc.sh
 
 	echo 'Patch for BOLT on toolchain'
-	bash antman -patch=bolt
+	bash antman --patch=bolt
 fi
 
 # Regenerate defconfig file
