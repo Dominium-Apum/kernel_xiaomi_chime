@@ -393,7 +393,7 @@ pipe_write(struct kiocb *iocb, struct iov_iter *from)
 		struct pipe_buffer *buf = pipe->bufs + lastbuf;
 		int offset = buf->offset + buf->len;
 
-		if (buf->ops->can_merge && offset + chars <= PAGE_SIZE) {
+		if (buf->ops && buf->ops->can_merge && offset + chars <= PAGE_SIZE) {
 			ret = pipe_buf_confirm(pipe, buf);
 			if (ret)
 				goto out;
