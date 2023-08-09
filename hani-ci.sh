@@ -10,7 +10,7 @@ export KBUILD_BUILD_USER=hani
 export KBUILD_BUILD_HOST=dungeon
 
 # Install needed tools
-if [[ $1 = "-t" || $1 = "--tools" ]]; then
+if [[ $1 = "-n" || $1 = "--neutron" ]]; then
         mkdir toolchain
 	cd toolchain
 
@@ -42,6 +42,7 @@ if [[ $1 = "-r" || $1 = "--regen" ]]; then
 	echo -e "\nSuccessfully regenerated defconfig at $DEFCONFIG"
 fi
 
+# Start building the kernel
 if [[ $1 = "-b" || $1 = "--build" ]]; then
 	export ARCH=arm64
 	PATH=$PWD/toolchain/bin:$PATH
@@ -64,12 +65,12 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	dtb="out/arch/arm64/boot/dtb.img"
 
 	if [ -f "$kernel" ]; then
-		rm *.zip 2>/dev/null
 		# Set kernel name and version
 		hash=$(git log -n 1 --pretty=format:'%h')
 		lastcommit=$hash
 		REVISION=4.19-hanikrnl.$lastcommit
-		ZIPNAME=""$REVISION"-beehive-chime-$(date '+%Y%m%d-%H%M').zip"
+		ZIPNAMEFull=""$REVISION"-beehive-chime-FULL.zip"
+		ZIPNAMENoDTBO=""$REVISION"-beehive-chime-NoDTBO.zip"
 		echo -e ""
 		echo -e ""
 		echo -e "********************************************"
@@ -82,6 +83,8 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	elif ! git clone -q https://github.com/itsHanibee/AnyKernel3 -b master; then
 			echo -e "\nAnyKernel3 repo not found locally and couldn't clone from GitHub! Aborting..."
 	fi
+
+		# Pack images into .zip
 		cp $kernel AnyKernel3
 		cp $dtbo AnyKernel3
 		cp $dtb AnyKernel3
@@ -89,22 +92,29 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		rm -rf out/arch/arm64/boot
 		cd AnyKernel3
 		git checkout master &> /dev/null
-		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
+
+		## Full .zip (Kernel, DTBO, DTB)
+		if [[ $1 = "-f" || $1 = "--full" ]]; then
+		zip -r9 "../$ZIPNAMEFull" * -x .git README.md *placeholder
+		fi
+
+		## Partial .zip (Kernel image only)
+		if [[ $1 = "-p" || $1 = "--partial" ]]; then
+		zip -r9 "../$ZIPNAMENoDTBO" * -x .git README.md *placeholder dtbo.img dtb.img
+		fi
+
 		cd ..
 
         echo -e ""
         echo -e ""
         echo -e "************************************************************"
         echo -e "**                                                        **"
-        echo -e "**   File name: $ZIPNAME   **"
         echo -e "**   Build completed in $((SECONDS / 60)) minute(s) and $((SECONDS % 60)) second(s)!    **"
         echo -e "**                                                        **"
         echo -e "************************************************************"
         echo -e ""
         echo -e ""
 	else
-        echo -e ""
-        echo -e ""
         echo -e "*****************************"
         echo -e "**                         **"
         echo -e "**   Compilation failed!   **"

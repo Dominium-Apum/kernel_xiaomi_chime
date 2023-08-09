@@ -1,4 +1,4 @@
-name: Build Kernel on GitHub Actions
+name: Build Kernel (with DTBO)
 
 on:
   workflow_dispatch:
@@ -24,13 +24,16 @@ jobs:
         patchelf git-lfs ripgrep clang-11 &> /dev/null
 
     - name: Download Neutron Toolchain
-      run: bash hani-ci.sh --tools
+      run: bash hani-ci.sh --neutron
 
     - name: Build hanikrnl-beehive
       run: bash hani-ci.sh --build
+
+    - name: Archive built images
+      run: bash hani-ci.sh --full
 
     - name: Upload kernel
       uses: actions/upload-artifact@v3
       with:
         name: hanikrnl-beehive
-        path: 4.19-hanikrnl.*-beehive-chime*.zip
+        path: 4.19-hanikrnl.*.zip
