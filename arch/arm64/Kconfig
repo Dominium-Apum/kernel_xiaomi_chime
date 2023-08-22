@@ -178,6 +178,7 @@ config ARM64
 	select SWIOTLB
 	select SYSCTL_EXCEPTION_TRACE
 	select THREAD_INFO_IN_TASK
+	select LD_DEAD_CODE_DATA_ELIMINATION
 	help
 	  ARM 64-bit (AArch64) Linux support.
 
