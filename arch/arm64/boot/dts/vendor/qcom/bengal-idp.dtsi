@@ -173,6 +173,7 @@
 	qcom,qg-iterm-ma = <350>;
 	qcom,tcss-enable;
 	qcom,tcss-entry-soc;
+	qcom,bass-enable;
 	qcom,hold-soc-while-full;
 	qcom,linearize-soc;
 	qcom,qg-use-s7-ocv;
