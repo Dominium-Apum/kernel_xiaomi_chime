@@ -2698,6 +2698,7 @@ static struct spi_driver nvt_spi_driver = {
 #ifdef CONFIG_OF
 		.of_match_table = nvt_match_table,
 #endif
+		.probe_type = PROBE_PREFER_ASYNCHRONOUS,
 	},
 };
 static int __init is_lockdown_info_detect(char *str)
