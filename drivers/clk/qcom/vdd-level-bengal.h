@@ -25,14 +25,14 @@ enum vdd_levels {
 
 static int vdd_corner[] = {
 	[VDD_NONE]    = 0,
-	[VDD_MIN]     = 24 + 1,
-	[VDD_LOWER]   = 48 + 1,
-	[VDD_LOW]     = 75 + 1,
-	[VDD_LOW_L1]  = 100 + 1,
-	[VDD_NOMINAL] = 115 + 1,
-	[VDD_NOMINAL_L1] = 120 + 1,
-	[VDD_HIGH]    = 140 + 1,
-	[VDD_HIGH_L1]    = 170 + 1,
+	[VDD_MIN]     = 16 + 1,
+	[VDD_LOWER]   = 42 + 1,
+	[VDD_LOW]     = 50 + 1,
+	[VDD_LOW_L1]  = 80 + 1,
+	[VDD_NOMINAL] = 100 + 1,
+	[VDD_NOMINAL_L1] = 115 + 1,
+	[VDD_HIGH]    = 130 + 1,
+	[VDD_HIGH_L1]    = 160 + 1,
 };
 
 enum vdd_l2_levels {
