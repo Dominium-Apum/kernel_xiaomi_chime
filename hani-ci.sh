@@ -65,10 +65,10 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	if [ -f "$kernel" ]; then
 		rm *.zip 2>/dev/null
 		# Set kernel name and version
-		hash=$(git log -n 1 --pretty=format:'%h')
+		hash=$(git log -n 1 --pretty=format:'%h' | cut -c 1-7)
 		lastcommit=$hash
 		REVISION=4.19-hanikrnl.$lastcommit
-		ZIPNAME=""$REVISION"-beehive-chime-$(date '+%Y%m%d-%H%M').zip"
+		ZIPNAME=""$REVISION"-chime-$(date '+%d.%m.%y-%H%M').zip"
 		echo -e ""
 		echo -e ""
 		echo -e "********************************************"
