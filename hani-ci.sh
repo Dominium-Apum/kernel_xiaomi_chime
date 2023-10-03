@@ -86,7 +86,6 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 
 		rm -rf out/arch/arm64/boot
 		cd AnyKernel3
-		git checkout master &> /dev/null
 		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
 		cd ..
 
