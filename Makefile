@@ -712,6 +712,7 @@ KBUILD_CFLAGS	+= -mllvm -polly \
 		   -mllvm -polly-run-inliner \
 		   -mllvm -polly-ast-use-context \
 		   -mllvm -polly-loopfusion-greedy=1 \
+		   -mllvm -polly-postopts=1 \
 		   -mllvm -polly-reschedule=1 \
 		   -mllvm -polly-detect-keep-going \
 		   -mllvm -polly-position=before-vectorizer \
