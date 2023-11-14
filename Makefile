@@ -454,6 +454,8 @@ KBUILD_AFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 else ifeq ($(cc-name),clang)
 KBUILD_CFLAGS += -mcpu=cortex-a73+crypto+crc -mtune=cortex-a73
 KBUILD_AFLAGS += -mcpu=cortex-a73 -mtune=cortex-a73
+#Enable hot cold split optimization
+KBUILD_CFLAGS   += -mllvm -hot-cold-split=true
 endif
 
 KBUILD_AFLAGS_KERNEL :=
