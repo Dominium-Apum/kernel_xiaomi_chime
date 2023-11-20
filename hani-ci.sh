@@ -57,7 +57,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	echo -e "*****************************"
 	echo -e ""
 	echo -e ""
-	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip -j$(nproc) || exit 1
+	make O=out CROSS_COMPILE=aarch64-linux-gnu- LLVM=1 LLVM_IAS=1 LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip READELF=llvm-readelf OBJSIZE=llvm-size -j$(nproc) || exit 1
 
 	kernel="out/arch/arm64/boot/Image"
 	dtbo="out/arch/arm64/boot/dtbo.img"
