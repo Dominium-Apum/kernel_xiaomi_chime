@@ -673,7 +673,7 @@ static int __init ff_ctl_driver_init(void)
 
     /* Init the wake lock. */
 #ifdef CONFIG_PM_WAKELOCKS
-    wakeup_source_init(&ff_ctl_context.wake_lock, "ff_wake_lock");
+    wakeup_source_add(&ff_ctl_context.wake_lock);
 #else
     wake_lock_init(&ff_ctl_context.wake_lock, WAKE_LOCK_SUSPEND, "ff_wake_lock");
 #endif
@@ -700,7 +700,7 @@ static void __exit ff_ctl_driver_exit(void)
 
     /* De-init the wake lock. */
 #ifdef CONFIG_PM_WAKELOCKS
-    wakeup_source_trash(&g_context->wake_lock);
+    wakeup_source_destroy(&g_context->wake_lock);
 #else
     wake_lock_destroy(&g_context->wake_lock);
 #endif

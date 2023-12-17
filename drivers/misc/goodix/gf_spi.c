@@ -764,7 +764,7 @@ static int gf_probe(struct platform_device *pdev)
 	gf_dev->notifier = goodix_noti_block;
 	fb_register_client(&gf_dev->notifier);
 
-	wakeup_source_init(&fp_wakelock, "fp_wakelock");
+	wakeup_source_add(&fp_wakelock);
 
 	pr_info("version V%d.%d.%02d\n", VER_MAJOR, VER_MINOR, PATCH_LEVEL);
 
@@ -802,7 +802,7 @@ static int gf_remove(struct platform_device *pdev)
 {
 	struct gf_dev *gf_dev = &gf;
 
-	wakeup_source_trash(&fp_wakelock);
+	wakeup_source_destroy(&fp_wakelock);
 	fb_unregister_client(&gf_dev->notifier);
 	if (gf_dev->input)
 		input_unregister_device(gf_dev->input);
