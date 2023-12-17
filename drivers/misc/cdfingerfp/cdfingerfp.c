@@ -630,7 +630,7 @@ static int cdfinger_probe(struct platform_device *pdev)
 	cdfingerdev->miscdev = &st_cdfinger_dev;
 	mutex_init(&cdfingerdev->buf_lock);
 #ifdef CONFIG_PM_WAKELOCKS
-       wakeup_source_init(&cdfingerdev->cdfinger_ws, "cdfinger wakelock");
+       wakeup_source_add(&cdfingerdev->cdfinger_ws);
 #else
 	wake_lock_init(&cdfingerdev->cdfinger_lock, WAKE_LOCK_SUSPEND, "cdfinger wakelock");
 #endif
@@ -658,7 +658,7 @@ static int cdfinger_probe(struct platform_device *pdev)
 
 unregister_dev:
 #ifdef CONFIG_PM_WAKELOCKS
-	wakeup_source_trash(&cdfingerdev->cdfinger_ws);
+	wakeup_source_destroy(&cdfingerdev->cdfinger_ws);
 #else
 	wake_lock_destroy(&cdfingerdev->cdfinger_lock);
 #endif
