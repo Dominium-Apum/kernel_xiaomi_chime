@@ -61,6 +61,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 
 	kernel="out/arch/arm64/boot/Image"
 	dtbo="out/arch/arm64/boot/dtbo.img"
+	dtb="out/arch/arm64/boot/dtb.img"
 
 	if [ -f "$kernel" ]; then
 		rm *.zip 2>/dev/null
@@ -83,6 +84,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 	fi
 		cp $kernel AnyKernel3
 		cp $dtbo AnyKernel3
+		cp $dtb AnyKernel3
 
 		rm -rf out/arch/arm64/boot
 		cd AnyKernel3
