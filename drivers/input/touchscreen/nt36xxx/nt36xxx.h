@@ -30,7 +30,7 @@
 
 #include "nt36xxx_mem_map.h"
 
-#define NVT_DEBUG 0
+#define NVT_DEBUG 1
 
 //---GPIO number---
 #define NVTTOUCH_RST_PIN 980
