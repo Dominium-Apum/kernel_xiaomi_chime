@@ -737,10 +737,13 @@ KBUILD_CFLAGS	+= -ffp-contract=fast
 # Enable Hot/Cold Split Optimization
 KBUILD_CFLAGS   += -mllvm -hot-cold-split=true
 
+# Machine Learning Guided Optimization
+KBUILD_CFLAGS	+= -mllvm -regalloc-enable-advisor=release
+
 ifdef CONFIG_INLINE_OPTIMIZATION
 KBUILD_CFLAGS	+= -mllvm -inline-threshold=2000
 KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=3000
-KBUILD_CFLAGS   += -mllvm -unroll-threshold=1200
+KBUILD_CFLAGS	+= -mllvm -unroll-threshold=1200
 endif
 
 KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
