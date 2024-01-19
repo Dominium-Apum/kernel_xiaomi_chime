@@ -35,5 +35,5 @@ jobs:
     - name: Upload kernel
       uses: actions/upload-artifact@v3
       with:
-        name: hanikrnl-wip
-        path: 4.19-hanikrnl.wip.*-chime*.zip
+        name: hanikrnl
+        path: 4.19-hanikrnl.*-chime*.zip

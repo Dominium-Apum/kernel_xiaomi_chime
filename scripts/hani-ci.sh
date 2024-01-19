@@ -56,7 +56,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		# Set kernel name and version
 		hash=$(git log -n 1 --pretty=format:'%h' | cut -c 1-7)
 		lastcommit=$hash
-		REVISION=4.19-hanikrnl.wip.$lastcommit
+		REVISION=4.19-hanikrnl.$lastcommit
 		ZIPNAME=""$REVISION"-chime-$(date '+%d.%m.%y-%H%M').zip"
 		echo -e ""
 		echo -e ""
