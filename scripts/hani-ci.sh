@@ -6,6 +6,9 @@ SECONDS=0 # builtin bash timer
 KERNEL_PATH=$PWD
 AK3_DIR="$HOME/tc/AnyKernel3"
 DEFCONFIG="vendor/chime_defconfig"
+
+# Exports for shits and giggles
+export KBUILD_BUILD_VERSION=69
 export KBUILD_BUILD_USER=hani
 export KBUILD_BUILD_HOST=dungeon
 
