@@ -10,6 +10,8 @@
 #include <linux/namei.h>
 #include <linux/suspicious.h>
 
+#include "mount.h"
+
 #define uid_matches() (getuid() >= 2000)
 
 static const char* const suspicious_paths[] = {
@@ -19,20 +21,25 @@ static const char* const suspicious_paths[] = {
 	"/dev/zygisk",
 	"/system/addon.d",
 	"/vendor/bin/install-recovery.sh",
-	"/system/bin/install-recovery.sh"
+	"/system/bin/install-recovery.sh",
+	"/debug_ramdisk"
 };
 
-static const char* suspicious_mount_types[] = {
+static const char* const suspicious_mount_types[] = {
 	"overlay"
 };
 
-static const char* suspicious_mount_paths[] = {
+static const char* const suspicious_mount_paths[] = {
 	"/data/adb",
 	"/data/app",
 	"/apex/com.android.art/bin/dex2oat",
 	"/system/apex/com.android.art/bin/dex2oat",
 	"/system/etc/preloaded-classes",
 	"/dev/zygisk"
+};
+
+static const char* const suspicious_mount_devices[] = {
+	"KSU"
 };
 
 static uid_t getuid(void) {
@@ -50,13 +57,9 @@ static uid_t getuid(void) {
 int is_suspicious_path(const struct path* const file)
 {
 	
-	size_t index = 0;
-	size_t size = 4096;
-	int res = -1;
-	int status = 0;
-	char* path = NULL;
-	char* ptr = NULL;
-	char* end = NULL;
+	size_t index = 0, size = 4096;
+	int res = -1, status = 0;
+	char *path = NULL, *ptr = NULL, *end = NULL;
 	
 	if (!uid_matches() || file == NULL) {
 		status = 0;
@@ -108,8 +111,7 @@ int is_suspicious_path(const struct path* const file)
 int suspicious_path(const struct filename* const name)
 {
 	
-	int status = 0;
-	int ret = 0;
+	int status = 0, ret = 0;
 	struct path path;
 	
 	if (IS_ERR(name)) {
@@ -134,18 +136,16 @@ int suspicious_path(const struct filename* const name)
 int is_suspicious_mount(struct vfsmount* const mnt, const struct path* const root)
 {
 	
-	size_t index = 0;
-	size_t size = 4096;
-	int res = -1;
-	int status = 0;
-	char* path = NULL;
-	char* ptr = NULL;
-	char* end = NULL;
+	size_t index = 0, size = 4096;
+	int res = -1, status = 0;
+	char* path = NULL, *ptr = NULL, *end = NULL;
 	
 	struct path mnt_path = {
 		.dentry = mnt->mnt_root,
 		.mnt = mnt
 	};
+	
+	struct mount* real = real_mount(mnt);
 	
 	if (!uid_matches()) {
 		status = 0;
@@ -153,7 +153,7 @@ int is_suspicious_mount(struct vfsmount* const mnt, const struct path* const roo
 	}
 	
 	for (index = 0; index < ARRAY_SIZE(suspicious_mount_types); index++) {
-		const char* name = suspicious_mount_types[index];
+		const char* const name = suspicious_mount_types[index];
 		
 		if (strcmp(mnt->mnt_root->d_sb->s_type->name, name) == 0) {
 			printk(KERN_INFO "suspicious-fs: mount point with suspicious type '%s' won't be shown to process with UID %i\n", mnt->mnt_root->d_sb->s_type->name, getuid());
@@ -188,10 +188,21 @@ int is_suspicious_mount(struct vfsmount* const mnt, const struct path* const roo
 	path[(size_t) res] = '\0';
 	
 	for (index = 0; index < ARRAY_SIZE(suspicious_mount_paths); index++) {
-		const char* name = suspicious_mount_paths[index];
+		const char* const name = suspicious_mount_paths[index];
 		
 		if (memcmp(path, name, strlen(name)) == 0) {
 			printk(KERN_INFO "suspicious-fs: mount point with suspicious path '%s' won't be shown to process with UID %i\n", path, getuid());
+			
+			status = 1;
+			goto out;
+		}
+	}
+	
+	for (index = 0; index < ARRAY_SIZE(suspicious_mount_devices); index++) {
+		const char* const name = suspicious_mount_devices[index];
+		
+		if (real->mnt_devname != NULL && strcmp(real->mnt_devname, name) == 0) {
+			printk(KERN_INFO "suspicious-fs: mount point with suspicious device name '%s' won't be shown to process with UID %i\n", real->mnt_devname, getuid());
 			
 			status = 1;
 			goto out;
