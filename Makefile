@@ -715,7 +715,6 @@ endif
 ifdef CONFIG_LLVM_POLLY
 ifeq ($(cc-name),clang)
 KBUILD_CFLAGS	+= -mllvm -polly \
-		   -mllvm -polly-run-dce \
 		   -mllvm -polly-parallel \
 		   -mllvm -polly-ast-use-context \
 		   -mllvm -polly-invariant-load-hoisting \
