@@ -1,5 +1,8 @@
 # Makefile for the focaltech touchscreen drivers.
 
+ccflags-y += -mllvm -inline-threshold=15000
+ccflags-y += -mllvm -inlinehint-threshold=10000
+
 obj-$(CONFIG_TOUCHSCREEN_FT8719)	+=  focaltech_core.o
 obj-$(CONFIG_TOUCHSCREEN_FT8719)	+=  focaltech_ex_fun.o
 obj-$(CONFIG_TOUCHSCREEN_FT8719)	+=  focaltech_ex_mode.o
