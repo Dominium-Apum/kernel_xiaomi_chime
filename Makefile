@@ -734,7 +734,10 @@ endif
 # Machine Learning Guided Optimization
 KBUILD_CFLAGS	+= -mllvm -regalloc-enable-advisor=release
 
-#Enable hot cold split optimization
+# FP Contraction Optimizatiom
+KBUILD_CFLAGS	+= -ffp-contract=fast
+
+# Enable Hot/Cold Split Optimization
 KBUILD_CFLAGS   += -mllvm -hot-cold-split=true
 
 ifdef CONFIG_INLINE_OPTIMIZATION
