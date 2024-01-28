@@ -315,7 +315,7 @@ static void nav_event_input(struct gf_dev *gf_dev, gf_nav_event_t nav_event)
 	}
 }
 
-static irqreturn_t gf_irq(int irq, void *handle)
+static irqreturn_t __always_inline gf_irq(int irq, void *handle)
 {
 #if defined(GF_NETLINK_ENABLE)
 	char msg = GF_NET_EVENT_IRQ;
@@ -332,7 +332,7 @@ static irqreturn_t gf_irq(int irq, void *handle)
 	return IRQ_HANDLED;
 }
 
-static int irq_setup(struct gf_dev *gf_dev)
+static int __always_inline irq_setup(struct gf_dev *gf_dev)
 {
 	int status;
 
@@ -351,7 +351,7 @@ static int irq_setup(struct gf_dev *gf_dev)
 	return status;
 }
 
-static void irq_cleanup(struct gf_dev *gf_dev)
+static void __always_inline irq_cleanup(struct gf_dev *gf_dev)
 {
 	gf_dev->irq_enabled = 0;
 	disable_irq(gf_dev->irq);
@@ -628,7 +628,7 @@ static const struct file_operations gf_fops = {
 #endif
 };
 
-static int goodix_fb_state_chg_callback(struct notifier_block *nb,
+static int __always_inline goodix_fb_state_chg_callback(struct notifier_block *nb,
 		unsigned long val, void *data)
 {
 	struct gf_dev *gf_dev;
