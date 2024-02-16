@@ -1,6 +1,7 @@
 #include "dsi-panel-td4330-truly-v2-singlemipi-fhd-cmd.dtsi"
 #include "dsi-panel-td4330-truly-v2-singlemipi-fhd-vid.dtsi"
 #include "dsi-panel-nt36525-truly-hd-plus-vid.dtsi"
+#include "dsi-panel-nt36672a-truly-v2-video.dtsi"
 
 #include "dsi-panel-nt36672a-tianma-fhd-video.dtsi"
 #include "dsi-panel-ft8719-truly-fhd-vid.dtsi"
@@ -126,7 +127,7 @@
 		qcom,mdp = <&mdss_mdp>;
 
 		qcom,dsi-default-panel =
-			<&dsi_td4330_truly_v2_video &dsi_ft8719_truly_v2_video &dsi_nt36672d_tianma_v2_video &dsi_nt36672d_xinli_v2_video>;
+			<&dsi_td4330_truly_v2_video &dsi_ft8719_truly_v2_video &dsi_nt36672d_tianma_v2_video &dsi_nt36672a_truly_v2_video &dsi_nt36672d_xinli_v2_video>;
 	};
 
 	sde_wb: qcom,wb-display@0 {
@@ -138,7 +139,7 @@
 
 	msm_notifier: qcom,msm_notifier@0 {
 		compatible = "qcom,msm-notifier";
-		panel = <&dsi_td4330_truly_v2_video &dsi_ft8719_truly_v2_video &dsi_nt36672d_tianma_v2_video &dsi_nt36672d_xinli_v2_video>;
+		panel = <&dsi_td4330_truly_v2_video &dsi_ft8719_truly_v2_video &dsi_nt36672d_tianma_v2_video &dsi_nt36672a_truly_v2_video &dsi_nt36672d_xinli_v2_video>;
 
 	};
 };
@@ -219,6 +220,37 @@
 		};
 	};
 };
+
+&dsi_nt36672a_truly_v2_video {
+	qcom,esd-check-enabled;
+	qcom,mdss-dsi-panel-status-check-mode = "reg_read";
+	qcom,mdss-dsi-panel-status-command = <0x6010001 0x10a>;
+	qcom,mdss-dsi-panel-status-command-state = "dsi_lp_mode";
+	qcom,mdss-dsi-panel-status-value = <0x9c>;
+	qcom,mdss-dsi-panel-status-read-length = <0x01>;
+	qcom,mdss-dsi-panel-max-error-count = <0x03>;
+	qcom,mdss-dsi-t-clk-post = <0x0f>;
+	qcom,mdss-dsi-t-clk-pre = <0x37>;
+	qcom,mdss-dsi-panel-framerate = <60>;
+        qcom,dsi-select-clocks = "mux_byte_clk0", "mux_pixel_clk0",
+				"src_byte_clk0", "src_pixel_clk0",
+				"shadow_byte_clk0", "shadow_pixel_clk0";
+	qcom,dsi-dyn-clk-list = <0x3a2f7bc0 0x3ae9ad50 0x3aab9cc8 0x3a6d8c48>;
+	qcom,dsi-dyn-clk-type = "constant-fps-adjust-vfp";
+	qcom,mdss-dsi-display-timings {
+		timing@0{
+			qcom,mdss-dsi-panel-phy-timings = 
+				[26 20 09 0A 06 02 04 A0
+				26 20 09 0A 06 02 04 A0 
+				26 20 09 0A 06 02 04 A0 
+				26 20 09 0A 06 02 04 A0 
+				26 1F 09 0A 06 02 04 A0];
+			qcom,display-topology = <1 0 1>;
+			qcom,default-topology-index = <0>;
+		};
+	};
+};
+
 //chenwenmin
 &dsi_nt36672a_tianma_video {
 	qcom,panel-supply-entries = <&dsi_panel_pwr_supply>;
