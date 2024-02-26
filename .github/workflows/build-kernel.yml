@@ -29,11 +29,11 @@ jobs:
     - name: Download Neutron Toolchain
       run: bash scripts/hani-ci.sh --tools
 
-    - name: Build hanikrnl.
+    - name: Build hanikrnl.nethunter
       run: bash scripts/hani-ci.sh --build
 
     - name: Upload kernel
       uses: actions/upload-artifact@v4
       with:
-        name: hanikrnl-android
-        path: 4.19-hanikrnl.android-*-chime*.zip
+        name: hanikrnl-nethunter
+        path: 4.19-hanikrnl.nethunter-*-chime*.zip
