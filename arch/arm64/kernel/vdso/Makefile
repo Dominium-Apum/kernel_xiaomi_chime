@@ -25,6 +25,8 @@ ccflags-y	+= $(DISABLE_LTO)
 KBUILD_CFLAGS	+= $(DISABLE_LTO)
 endif
 
+ccflags-y += -O3
+
 ccflags-y := -fno-common -fno-builtin -fno-stack-protector -ffixed-x18
 ccflags-y += -DDISABLE_BRANCH_PROFILING
 
@@ -36,14 +38,11 @@ UBSAN_SANITIZE			:= n
 OBJECT_FILES_NON_STANDARD	:= y
 KCOV_INSTRUMENT			:= n
 
-# Force -O2 to avoid libgcc dependencies
+# Force -O3 to avoid libgcc dependencies
 CFLAGS_REMOVE_vgettimeofday.o = -pg -Os
-CFLAGS_vgettimeofday.o = -fPIC -fasynchronous-unwind-tables
+CFLAGS_vgettimeofday.o = -O3 -fPIC -fasynchronous-unwind-tables
 ifneq ($(cc-name),clang)
 CFLAGS_vgettimeofday.o += -mcmodel=tiny
-CFLAGS_vgettimeofday.o = -O2
-else
-CFLAGS_vgettimeofday.o = -O3
 endif
 
 ifneq ($(c-gettimeofday-y),)
