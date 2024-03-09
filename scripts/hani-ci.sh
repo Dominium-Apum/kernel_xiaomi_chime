@@ -22,7 +22,7 @@ if [[ $1 = "-t" || $1 = "--tools" ]]; then
 	chmod -x antman
 
 	echo 'Setting up toolchain in $(PWD)/toolchain'
-	bash antman -S || exit 1
+	bash antman -S --noprogress || exit 1
 
 	echo 'Patch for glibc'
 	bash antman --patch=glibc
