@@ -99,7 +99,7 @@ scm_version()
 			# again using exactly 7 hex chars.
 			else
 				head="$(echo $head | cut -c1-7)"
-				printf '%s%s' -g $head
+				printf '%s%s' @ $head
 			fi
 		fi
 
