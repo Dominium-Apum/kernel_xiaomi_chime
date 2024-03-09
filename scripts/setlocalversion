@@ -96,9 +96,9 @@ scm_version()
 				echo "$atag" | awk -F- '{printf("-%05d-%s", $(NF-1),substr($(NF),0,13))}'
 
 			# If we don't have a tag at all we print -g{commitish},
-			# again using exactly 12 hex chars.
+			# again using exactly 7 hex chars.
 			else
-				head="$(echo $head | cut -c1-12)"
+				head="$(echo $head | cut -c1-7)"
 				printf '%s%s' -g $head
 			fi
 		fi
