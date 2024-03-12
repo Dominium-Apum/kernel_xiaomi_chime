@@ -141,7 +141,7 @@ DEFINE_PER_CPU_READ_MOSTLY(int, sched_load_boost);
  */
 int __weak arch_asym_cpu_priority(int cpu)
 {
-	return -cpu;
+	return -arch_scale_cpu_capacity(NULL, cpu);
 }
 #endif
 
