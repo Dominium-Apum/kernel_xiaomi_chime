@@ -52,7 +52,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x0>;
 			capacity-dmips-mhz = <637>;
-			efficiency = <637>;
 			dynamic-power-coefficient = <100>;
 			enable-method = "psci";
 			next-level-cache = <&L2_0>;
@@ -78,7 +77,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x1>;
 			capacity-dmips-mhz = <637>;
-			efficiency = <637>;
 			dynamic-power-coefficient = <100>;
 			enable-method = "psci";
 			next-level-cache = <&L2_0>;
@@ -99,7 +97,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x2>;
 			capacity-dmips-mhz = <637>;
-			efficiency = <637>;
 			dynamic-power-coefficient = <100>;
 			enable-method = "psci";
 			next-level-cache = <&L2_0>;
@@ -120,7 +117,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x3>;
 			capacity-dmips-mhz = <637>;
-			efficiency = <637>;
 			dynamic-power-coefficient = <100>;
 			enable-method = "psci";
 			next-level-cache = <&L2_0>;
@@ -142,7 +138,6 @@
 			reg = <0x0 0x100>;
 			enable-method = "psci";
 			capacity-dmips-mhz = <1024>;
-			efficiency = <1024>;
 			dynamic-power-coefficient = <282>;
 			next-level-cache = <&L2_1>;
 			qcom,freq-domain = <&cpufreq_hw 1 7>;
@@ -167,7 +162,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x101>;
 			capacity-dmips-mhz = <1024>;
-			efficiency = <1024>;
 			dynamic-power-coefficient = <282>;
 			enable-method = "psci";
 			next-level-cache = <&L2_1>;
@@ -188,7 +182,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x102>;
 			capacity-dmips-mhz = <1024>;
-			efficiency = <1024>;
 			dynamic-power-coefficient = <282>;
 			enable-method = "psci";
 			next-level-cache = <&L2_1>;
@@ -209,7 +202,6 @@
 			compatible = "arm,armv8";
 			reg = <0x0 0x103>;
 			capacity-dmips-mhz = <1024>;
-			efficiency = <1024>;
 			dynamic-power-coefficient = <282>;
 			enable-method = "psci";
 			next-level-cache = <&L2_1>;
@@ -1734,7 +1726,8 @@
 			<1401600>,
 			<1536000>,
 			<1612800>,
-			<1804800>;
+			<1804800>,
+			<2016000>;
 	};
 
 	tcsr_mutex_block: syscon@00340000 {
