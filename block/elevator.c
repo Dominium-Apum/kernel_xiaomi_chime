@@ -996,12 +996,12 @@ int elevator_init_mq(struct request_queue *q)
 	mutex_lock(&q->sysfs_lock);
 	if (unlikely(q->elevator))
 		goto out_unlock;
-	if (IS_ENABLED(CONFIG_IOSCHED_BFQ)) {
-		e = elevator_get(q, "bfq", false);
+	if (IS_ENABLED(CONFIG_MQ_IOSCHED_SSG)) {
+		e = elevator_get(q, "ssg", false);
 		if (!e)
 			goto out_unlock;
 	} else {
-		e = elevator_get(q, "mq-deadline", false);
+		e = elevator_get(q, "bfq", false);
 		if (!e)
 			goto out_unlock;
 	}
