@@ -4,7 +4,7 @@
 #include "linux/types.h"
 #include "linux/workqueue.h"
 
-#define KERNEL_SU_VERSION 11711
+#define KERNEL_SU_VERSION 11804
 // logic: (10000 + (git rev-list --count HEAD) for the driver source + 200)
 #define KERNEL_SU_OPTION 0xDEADBEEF
 
