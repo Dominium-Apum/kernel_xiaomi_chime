@@ -1,10 +1,10 @@
 #ifndef __KSU_H_KSU
 #define __KSU_H_KSU
 
-#include "linux/types.h"
-#include "linux/workqueue.h"
+#include <linux/types.h>
+#include <linux/workqueue.h>
 
-#define KERNEL_SU_VERSION 11804
+#define KERNEL_SU_VERSION 11839
 // logic: (10000 + (git rev-list --count HEAD) for the driver source + 200)
 #define KERNEL_SU_OPTION 0xDEADBEEF
 
