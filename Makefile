@@ -452,7 +452,7 @@ ifeq ($(cc-name),gcc)
 KBUILD_CFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 KBUILD_AFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 else ifeq ($(cc-name),clang)
-OPT_FLAGS := -march=armv8.2-a+crypto+crc+nodotprod
+OPT_FLAGS := -march=armv8.2-a+crypto+crc+nodotprod+lse+fp16
 OPT_FLAGS += -mtune=cortex-a73
 KBUILD_CFLAGS += $(OPT_FLAGS)
 KBUILD_AFLAGS += $(OPT_FLAGS)
@@ -711,18 +711,24 @@ endif # $(dot-config)
 
 ifdef CONFIG_LLVM_POLLY
 ifeq ($(cc-name),clang)
-KBUILD_CFLAGS	+= -mllvm -polly \
-		   -mllvm -polly-parallel \
-		   -mllvm -polly-ast-use-context \
-		   -mllvm -polly-invariant-load-hoisting \
-		   -mllvm -polly-run-inliner \
-		   -mllvm -polly-loopfusion-greedy=1 \
-		   -mllvm -polly-reschedule=1 \
-		   -mllvm -polly-postopts=1 \
-		   -mllvm -polly-omp-backend=LLVM \
-		   -mllvm -polly-scheduling=dynamic \
-		   -mllvm -polly-scheduling-chunksize=1 \
-		   -mllvm -polly-vectorizer=stripmine
+KBUILD_CFLAGS   += -mllvm -polly \
+                    -mllvm -polly-parallel \
+                    -mllvm -polly-ast-use-context \
+                    -mllvm -polly-invariant-load-hoisting \
+                    -mllvm -polly-run-inliner \
+                    -mllvm -polly-loopfusion-greedy \
+                    -mllvm -polly-reschedule \
+                    -mllvm -polly-postopts \
+                    -mllvm -polly-omp-backend=LLVM \
+                    -mllvm -polly-scheduling=dynamic \
+                    -mllvm -polly-scheduling-chunksize=1 \
+                    -mllvm -polly-vectorizer=stripmine \
+                    -mllvm -polly-dependences-analysis-type=value-based \
+                    -mllvm -polly-dependences-computeout=0 \
+                    -mllvm -polly-enable-delicm \
+                    -mllvm -polly-num-threads=0 \
+                    -mllvm -polly-optimizer=isl \
+                    -mllvm -polly-tiling
 else
 KBUILD_CFLAGS	+=
 endif
