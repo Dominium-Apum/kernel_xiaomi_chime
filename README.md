@@ -9,7 +9,7 @@ The branches on this project are made use of just like any other project but the
 
 - `main`/Default branch - The one that receives constant changes and force pushes, keep in mind that the patches that go here are not promised to stable and are always subject to removal.
 
-- `android` - The comparitively slower rolling branch, the changes that make the cut drop down here. This branch also adds a patch for [KernelSU](https://github.com/tiann/KernelSU), this is omitted from the main branch to avoid build issues for predictability reasons. Few experimental compiler optimizations are also missing here compared to `main` to retain compatibility with AOSP Clang.
+- `android` - The comparitively slower rolling branch, the changes that make the cut drop down here. This branch also adds [KernelSU](https://github.com/Dominium-Apum/kernelsu/tree/v0.9.X) that's forked to keep the kernel-space driver working for non-GKI kernels, this is omitted from the main branch. Few experimental compiler optimizations are also missing here compared to `main` to retain compatibility with AOSP Clang.
 
 - `The rest of the branches` - They're just there for me to segregate and test/experiment with different patchsets, they shouldn't mean much to you unless if you feel curious.
 
