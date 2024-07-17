@@ -76,7 +76,8 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		cp $dtb AnyKernel3
 
 		cd AnyKernel3
-		zip -r9 "../$ZIPNAME" * -x .git README.md *placeholder
+		rm README.md && cp ../README.md ./README
+		zip -r9 "../$ZIPNAME" * -x .git *placeholder
 		cd ..
 
         echo -e ""
