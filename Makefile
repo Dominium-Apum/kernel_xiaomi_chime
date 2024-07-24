@@ -452,7 +452,7 @@ ifeq ($(cc-name),gcc)
 KBUILD_CFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 KBUILD_AFLAGS += -mcpu=cortex-a73.cortex-a53 -mtune=cortex-a73.cortex-a53
 else ifeq ($(cc-name),clang)
-OPT_FLAGS := -march=armv8.2-a+crypto+crc+nodotprod+lse+fp16
+OPT_FLAGS := -march=armv8.2-a+crypto+crc+fp16
 OPT_FLAGS += -mtune=cortex-a73
 KBUILD_CFLAGS += $(OPT_FLAGS)
 KBUILD_AFLAGS += $(OPT_FLAGS)
