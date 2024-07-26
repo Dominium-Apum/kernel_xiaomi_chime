@@ -744,9 +744,9 @@ KBUILD_CFLAGS	+= -ffp-contract=fast
 KBUILD_CFLAGS   += -mllvm -hot-cold-split=true
 
 ifdef CONFIG_INLINE_OPTIMIZATION
-KBUILD_CFLAGS	+= -mllvm -inline-threshold=2000
-KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=3000
-KBUILD_CFLAGS	+= -mllvm -unroll-threshold=1200
+KBUILD_CFLAGS	+= -mllvm -inline-threshold=1300
+KBUILD_CFLAGS	+= -mllvm -inlinehint-threshold=2000
+KBUILD_CFLAGS	+= -mllvm -unroll-threshold=900
 endif
 
 KBUILD_CFLAGS	+= $(call cc-option,-fno-delete-null-pointer-checks,)
