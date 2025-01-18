@@ -24,7 +24,7 @@ jobs:
         curl libarchive-tools flex \
         unzip python2 python3 python3-pip python3-dev \
         python-is-python3 ccache libncurses5 lzop \
-        patchelf git-lfs ripgrep clang-11 &> /dev/null
+        patchelf git-lfs ripgrep clang-14 &> /dev/null
 
     - name: Download Neutron Toolchain
       run: bash scripts/hani-ci.sh --tools
