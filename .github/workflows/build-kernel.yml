@@ -15,9 +15,6 @@ jobs:
     - name: Update Environment
       run: sudo apt update -y
 
-    - name: Upgrade Environment
-      run: sudo apt upgrade -y
-      
     - name: Install Dependencies
       run: sudo apt install -y git build-essential zip curl
 
