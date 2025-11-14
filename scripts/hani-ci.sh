@@ -58,7 +58,7 @@ if [[ $1 = "-b" || $1 = "--build" ]]; then
 		rm *.zip 2>/dev/null
 		# Set kernel name and version
 		lastcommit=$(git log -n 1 --pretty=format:'%h' | cut -c 1-7)
-		ZIPNAME="4.19-hanikrnl."$lastcommit"-chime-$(date '+%d.%m.%y-%H%M').zip"
+		ZIPNAME="4.19-hanikrnl.android-"$lastcommit"-chime-$(date '+%d.%m.%y-%H%M').zip"
 		echo -e ""
 		echo -e ""
 		echo -e "********************************************"
